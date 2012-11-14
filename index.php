@@ -93,7 +93,7 @@ if ($twitter->isConnected()) {
     $users = $twitter->countNonFollowers($login_data['screen_name']);
     $limits = $twitter->getLimit();
     ?>
-<form method=POST action="<?php echo $_SERVER['PHP_SELF'];?>" class="form-horizontal">
+<form method=POST action="<?php echo $_SERVER['PHP_SELF'];?>" name="search" class="form-horizontal">
 <div id="info" class="container">
     <div class="row mg-top">
         <div id="avatar" class="span2">
