@@ -92,6 +92,7 @@ if ($twitter->isConnected()) {
     $followers_count = $data->followers_count + count($seguir);
     $users = $twitter->countNonFollowers($login_data['screen_name']);
     $limits = $twitter->getLimit();
+    $time = $limits->reset_time_in_seconds - time();
     ?>
 <form method=POST action="<?php echo $_SERVER['PHP_SELF'];?>" name="search" class="form-horizontal">
 <div id="info" class="container">
@@ -128,7 +129,12 @@ if ($twitter->isConnected()) {
             <?php echo HOURLY_LIMIT; ?>: <b><?php echo $limits->hourly_limit ?></b>
         </div>
         <div class="span3">
-            <?php echo RESET; ?>: <b><?php echo date($date, $limits->reset_time_in_seconds) ?></b>
+            <?php echo RESET; ?>: <span id="reset"></span>
+            <script type="text/javascript">
+                $(function(){
+                    $('#reset').countdown({until: <?php echo "'+" . $time . "', compact: true, format: 'MS', description: ''"; ?>});
+                });
+            </script>
         </div>
         <div class="span2">
             <?php echo REQUESTS; ?>: <b><?php echo 350 - $limits->remaining_hits ?></b>
@@ -216,7 +222,7 @@ if ($twitter->isConnected()) {
             </div>
             <div id="main-result" class="span7">
                 <?php
-                    if (isset($_POST['hashtag']) && $_POST["hashtag"] == "" && $_POST["unfollow"] != "") {
+                    if (isset($_POST['hashtag']) && $_POST["hashtag"] == "" && $_POST["unfollow"] != "" && (!isset($_POST['unfollow']))) {
                         echo '<div class="alert alert-error">' . REQUIRED . '</div>';
                     }
                 //Hashtag Search
